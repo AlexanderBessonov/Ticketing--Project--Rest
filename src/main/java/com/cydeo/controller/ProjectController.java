@@ -15,11 +15,10 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final UserService userService;
 
-    public ProjectController(ProjectService projectService, UserService userService) {
+
+    public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
-        this.userService = userService;
     }
      @GetMapping
     public ResponseEntity<ResponseWrapper> getProjects(){
@@ -34,7 +33,7 @@ public class ProjectController {
 
         ProjectDTO projectDTO = projectService.getByProjectCode(code);
 
-        return ResponseEntity.ok(new ResponseWrapper("Project is successfully",projectDTO,HttpStatus.OK));
+        return ResponseEntity.ok(new ResponseWrapper("Project is successfully retrieved",projectDTO,HttpStatus.OK));
     }
 
     @PostMapping
