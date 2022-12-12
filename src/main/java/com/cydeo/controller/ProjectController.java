@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,7 @@ public class ProjectController {
         this.projectService = projectService;
     }
      @GetMapping
+     @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> getProjects(){
 
         List<ProjectDTO> projectDTOList = projectService.listAllProjects();
@@ -29,6 +31,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{code}")
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> getProjectByCode(@PathVariable("code") String code){
 
         ProjectDTO projectDTO = projectService.getByProjectCode(code);
@@ -37,6 +40,7 @@ public class ProjectController {
     }
 
     @PostMapping
+    @RolesAllowed({"Admin","Manager"})
     public ResponseEntity<ResponseWrapper> createProject(@RequestBody ProjectDTO project){
 
      projectService.save(project);
@@ -45,6 +49,7 @@ public class ProjectController {
     }
 
     @PutMapping
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> updateProject(@RequestBody ProjectDTO projectDTO){
 
         projectService.update(projectDTO);
@@ -53,6 +58,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{projectcode}")
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> deleteProject(@PathVariable("projectcode") String projectcode){
 
        projectService.delete(projectcode);
@@ -60,6 +66,7 @@ public class ProjectController {
        return ResponseEntity.ok(new ResponseWrapper("Project is successfully deleted",HttpStatus.OK));
     }
     @GetMapping("/manager/project-status")
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> getProjectByManager(){
 
        List <ProjectDTO> projectDTOList = projectService.listAllProjectDetails();
@@ -68,6 +75,7 @@ public class ProjectController {
     }
 
     @PutMapping("/manager/complete/{projectCode}")
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> managerCompleteProject(@PathVariable("projectCode") String projectCode){
 
            projectService.complete(projectCode);
